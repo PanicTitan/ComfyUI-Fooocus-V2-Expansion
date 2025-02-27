@@ -17,6 +17,7 @@ import comfy.model_management as model_management
 from transformers import AutoTokenizer, AutoModelForCausalLM, set_seed, LogitsProcessorList
 from comfy.model_patcher import ModelPatcher
 from .util import join_prompts, remove_empty_str
+from server import PromptServer
 
 # Restore the original stdout
 sys.stdout = original_stdout
@@ -32,7 +33,6 @@ dangrous_patterns = '[]【】()（）|:：'
 # limitation of np.random.seed(), called from transformers.set_seed()
 SEED_LIMIT_NUMPY = 2**32
 neg_inf = - 8192.0
-
 
 def safe_str(x):
     x = str(x)
@@ -139,10 +139,17 @@ class FooocusV2Expansion:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "text": ("STRING", {"multiline": True}),
-                "seed": ("INT", {"default": 0, "min": 0, "max": 1125899906842624}),
-                "log_prompt": (["No", "Yes"], {"default": "No"}),
+                "positive_prompt": ("STRING", {"multiline": True}),
+                "prompt_seed": ("INT", {"default": -1, "min": -0xffffffffffffffff, "max": 0xffffffffffffffff}),
             },
+            "optional": {
+                "seed_behavior": (["Random", "Fixed", "Forward Prompt Seed", "Random Forward Prompt Seed"], {"default": "Random"}),
+                "log": ("BOOLEAN", {"default": True}),
+            },
+            "hidden": {
+                "persisted_seed": ("INT", {"default": -1, "min": -0xffffffffffffffff, "max": 0xffffffffffffffff}),
+                "unique_id": "UNIQUE_ID",
+            }
         }
 
     RETURN_TYPES = ("STRING", "INT",)
@@ -153,27 +160,62 @@ class FooocusV2Expansion:
 
     @staticmethod
     @torch.no_grad()
-    def expand_prompt(text, seed, log_prompt):
+    def expand_prompt(positive_prompt, prompt_seed, seed_behavior="Random", log = True, persisted_seed=-1, last_prompt="", last_prompt_seed=-1, unique_id=None):
         expansion = FooocusExpansion()
 
-        prompt = remove_empty_str([safe_str(text)], default='')[0]
+        last_prompt = positive_prompt
+        last_prompt_seed = prompt_seed
 
-        max_seed = 1125899906842624
-        if not isinstance(seed, int):
-            seed = random.randint(1, max_seed)
-        if seed < 0:
-            seed = - seed
-        seed = seed % max_seed
+        prompt = remove_empty_str([safe_str(positive_prompt)], default='')[0]
 
-        expansion_text = expansion(prompt, seed)
-        final_prompt = join_prompts(prompt, expansion_text)
+        if log == True:
+            print(f"[Fooocus V2 Expansion] Original Prompt: {prompt}")
 
-        if log_prompt == "Yes":
-            print(f"[Prompt Expansion] New suffix: {expansion_text}")
-            print(f"Final prompt: {final_prompt}")
+        if log == True:
+          print(f"[Fooocus V2 Expansion] Original Seed: {prompt_seed}")
 
-        return final_prompt, seed
+        if seed_behavior != "Fixed" or persisted_seed == -1:
+          persisted_seed = prompt_seed
+        
+        if seed_behavior == "Fixed":
+          prompt_seed = persisted_seed
 
+        if prompt_seed == -1 or seed_behavior == "Random" or seed_behavior == "Random Forward Prompt Seed":
+          prompt_seed = random.randint(1, 0xffffffffffffffff)
+          PromptServer.instance.send_sync("Fooocus.V2.Expansion.updateSeed", { "prompt_seed": prompt_seed, "id": unique_id })
+          if log == True:
+            print(f"[Fooocus V2 Expansion] Seed == -1 or seed_behavior == 'Random' -> New Seed: {prompt_seed}")
+
+        if prompt_seed < 0:
+          prompt_seed =- prompt_seed
+          if log == True:
+            print(f"[Fooocus V2 Expansion] Seed < 0 -> New Seed: {prompt_seed}")
+        
+        positive_prompt_expansion = expansion(prompt, prompt_seed)
+        final_prompt = join_prompts(prompt, positive_prompt_expansion)
+
+        if prompt_seed > 0xffffffffffffffff:
+          prompt_seed = int(prompt_seed) % SEED_LIMIT_NUMPY
+          if log == True:
+            print(f"[Fooocus V2 Expansion] Seed > 0xffffffffffffffff -> New Seed: {prompt_seed}")
+
+        truncated_seed = int(prompt_seed) % SEED_LIMIT_NUMPY
+
+        if seed_behavior == "Forward Prompt Seed" or seed_behavior == "Random Forward Prompt Seed":
+          prompt_seed = truncated_seed
+
+        if log == True:
+            print(f"[Fooocus V2 Expansion] Final Seed: {prompt_seed}")
+            print(f"[Fooocus V2 Expansion] Prompt Seed: {truncated_seed}")
+            print(f"[Fooocus V2 Expansion] New Suffix: {positive_prompt_expansion}")
+            print(f"[Fooocus V2 Expansion] Final Prompt: {final_prompt}")
+
+        return final_prompt, prompt_seed
+
+    @classmethod
+    def IS_CHANGED(cls, positive_prompt, prompt_seed, seed_behavior="Random", log = True, persisted_seed=-1, unique_id=None):
+      # return FooocusV2Expansion.expand_prompt(positive_prompt, prompt_seed, seed_behavior, log, persisted_seed, unique_id)
+      return float("NaN")
 
 # Define a mapping of node class names to their respective classes
 NODE_CLASS_MAPPINGS = {

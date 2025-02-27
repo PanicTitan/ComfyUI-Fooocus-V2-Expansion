@@ -2,8 +2,9 @@ from .prompt_expansion import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
 from .prompt_expansion import fooocus_expansion_path
 from .model_loader import load_file_from_url
 
+WEB_DIRECTORY = "./web/js"
 
-__all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
+__all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS', 'WEB_DIRECTORY']
 
 
 def download_models():
