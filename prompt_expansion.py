@@ -140,7 +140,7 @@ class FooocusV2Expansion:
         return {
             "required": {
                 "text": ("STRING", {"multiline": True}),
-                "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFF}),
+                "seed": ("INT", {"default": 0, "min": 0, "max": 1125899906842624}),
                 "log_prompt": (["No", "Yes"], {"default": "No"}),
             },
         }
@@ -158,7 +158,7 @@ class FooocusV2Expansion:
 
         prompt = remove_empty_str([safe_str(text)], default='')[0]
 
-        max_seed = int(1024 * 1024 * 1024)
+        max_seed = 1125899906842624
         if not isinstance(seed, int):
             seed = random.randint(1, max_seed)
         if seed < 0:
