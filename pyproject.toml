@@ -1,0 +1,14 @@
+[project]
+name = "fooocus-v2-expansion"
+description = "Adaptation of Fooocus Prompt Expansion for ComfyUI\nForked from [a/ComfyUI-Prompt-Expansion](https://github.com/meap158/ComfyUI-Prompt-Expansion) with some updates and changes based on original Fooocus, to be more specific [a/expansion.py](https://github.com/lllyasviel/Fooocus/blob/main/extras/expansion.py) and [a/LykosAI - GPT-Prompt-Expansion-Fooocus-v2](https://huggingface.co/LykosAI/GPT-Prompt-Expansion-Fooocus-v2)"
+version = "1.0.0"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/PanicTitan/ComfyUI-Fooocus-V2-Expansion"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-Fooocus-V2-Expansion"
+Icon = ""
