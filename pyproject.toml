@@ -11,4 +11,4 @@ Repository = "https://github.com/PanicTitan/ComfyUI-Fooocus-V2-Expansion"
 [tool.comfy]
 PublisherId = "panic-titan"
 DisplayName = "ComfyUI-Fooocus-V2-Expansion"
-Icon = "https://github.com/PanicTitan/ComfyUI-Fooocus-V2-Expansion/blob/main/logo.svg"
+Icon = "https://raw.githubusercontent.com/PanicTitan/ComfyUI-Fooocus-V2-Expansion/refs/heads/main/logo.svg"
