@@ -1,0 +1,1143 @@
+{
+  "last_node_id": 26,
+  "last_link_id": 23,
+  "nodes": [
+    {
+      "id": 3,
+      "type": "easy showAnything",
+      "pos": [
+        1182.7027587890625,
+        -746.1781616210938
+      ],
+      "size": [
+        210,
+        76
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "type": "*",
+          "shape": 7,
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null,
+          "slot_index": 0
+        }
+      ],
+      "title": "Real Seed",
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.2.7",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "102857224"
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": [
+        2392.70263671875,
+        -576.1781616210938
+      ],
+      "size": [
+        210,
+        54
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 5
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 6,
+          "slot_index": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "shape": 3,
+          "links": [
+            15
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 8,
+      "type": "CLIPTextEncode",
+      "pos": [
+        2392.70263671875,
+        -256.1781921386719
+      ],
+      "size": [
+        210,
+        54
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 7
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "shape": 3,
+          "links": [
+            16
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 9,
+      "type": "LoraLoader",
+      "pos": [
+        3192.70263671875,
+        -816.1781616210938
+      ],
+      "size": [
+        315,
+        126
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 9
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            14
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            5,
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "LoraLoader"
+      },
+      "widgets_values": [
+        "sd_xl_offset_example-lora_1.0.safetensors",
+        0.1,
+        0.1
+      ]
+    },
+    {
+      "id": 10,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        2692.70263671875,
+        -816.1781616210938
+      ],
+      "size": [
+        315,
+        98
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            9
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            10
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            12
+          ],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "juggernautXL_v8Rundiffusion.safetensors"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "EmptyLatentImage",
+      "pos": [
+        2992.70263671875,
+        183.82180786132812
+      ],
+      "size": [
+        315,
+        106
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            17
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        704,
+        1408,
+        1
+      ]
+    },
+    {
+      "id": 12,
+      "type": "VAEDecode",
+      "pos": [
+        3692.70263671875,
+        -46.17818832397461
+      ],
+      "size": [
+        210,
+        46
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 11
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            13
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 13,
+      "type": "SaveImage",
+      "pos": [
+        3992.70263671875,
+        -156.17819213867188
+      ],
+      "size": [
+        210,
+        270
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 13
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "KSampler",
+      "pos": [
+        2992.70263671875,
+        -216.17819213867188
+      ],
+      "size": [
+        315,
+        262
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 14
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 15
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 16
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 17
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            11
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        138057399248105,
+        "randomize",
+        60,
+        4,
+        "dpmpp_2m_sde_gpu",
+        "karras",
+        1
+      ]
+    },
+    {
+      "id": 19,
+      "type": "FooocusV2Expansion",
+      "pos": [
+        1092.7027587890625,
+        -616.1781616210938
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "positive_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "positive_prompt"
+          },
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "final_prompt",
+          "type": "STRING",
+          "links": [
+            2,
+            19
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "links": [
+            3,
+            18
+          ],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FooocusV2Expansion"
+      },
+      "widgets_values": [
+        "",
+        11006079701576940000,
+        "Random Forward Prompt Seed",
+        true
+      ]
+    },
+    {
+      "id": 6,
+      "type": "MarkdownNote",
+      "pos": [
+        1100,
+        240
+      ],
+      "size": [
+        403.20001220703125,
+        58
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Styles maybe dont work with your ComfyUI version",
+      "properties": {},
+      "widgets_values": [
+        "https://github.com/yolain/ComfyUI-Easy-Use/issues/658\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 18,
+      "type": "easy stylesSelector",
+      "pos": [
+        1092.7027587890625,
+        -316.1781921386719
+      ],
+      "size": [
+        425,
+        500
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "positive",
+          "type": "STRING",
+          "shape": 7,
+          "widget": {
+            "name": "positive"
+          },
+          "link": 19
+        },
+        {
+          "name": "negative",
+          "type": "STRING",
+          "shape": 7,
+          "widget": {
+            "name": "negative"
+          },
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "STRING",
+          "shape": 3,
+          "links": [
+            4,
+            6
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "negative",
+          "type": "STRING",
+          "shape": 3,
+          "links": [
+            8,
+            22
+          ],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.2.7",
+        "Node name for S&R": "easy stylesSelector",
+        "values": [
+          "Fooocus Enhance",
+          "Fooocus Sharp",
+          "Fooocus Negative"
+        ]
+      },
+      "widgets_values": [
+        "fooocus_styles",
+        "",
+        "",
+        "Fooocus Enhance,Fooocus Sharp,Fooocus Negative"
+      ]
+    },
+    {
+      "id": 21,
+      "type": "CR Prompt Text",
+      "pos": [
+        592.7027587890625,
+        -616.1781616210938
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "shape": 3,
+          "links": [
+            21
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "show_help",
+          "type": "STRING",
+          "shape": 3,
+          "links": null
+        }
+      ],
+      "title": "Positive Prompt",
+      "properties": {
+        "aux_id": "Suzie1/ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Prompt Text"
+      },
+      "widgets_values": [
+        "asian, big jugs, aesthetic, beautiful, visible teeth, action pose, barely covered, bareness, serenity, many"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 2,
+      "type": "easy showAnything",
+      "pos": [
+        1592.7027587890625,
+        -616.1781616210938
+      ],
+      "size": [
+        320,
+        240
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "type": "*",
+          "shape": 7,
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null,
+          "slot_index": 0
+        }
+      ],
+      "title": "Expanded Prompt",
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.2.7",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "asian, big jugs, aesthetic, beautiful, visible teeth, action pose, barely covered, bareness, serenity, many, asian, big jugs, aesthetic, beautiful, visible teeth, action pose, barely covered, bareness, serenity, many, fancy, perfect, quiet, color, fine detail, shiny, intricate, polished, epic composition, cinematic, complex, cool, breathtaking, highly detailed, artistic, sharp, focused, extremely elegant, smart, surreal, very coherent"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 4,
+      "type": "CR Prompt Text",
+      "pos": [
+        592.7027587890625,
+        -316.1781921386719
+      ],
+      "size": [
+        400,
+        340
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "shape": 3,
+          "links": [
+            20
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "show_help",
+          "type": "STRING",
+          "shape": 3,
+          "links": null
+        }
+      ],
+      "title": "Negative Prompt",
+      "properties": {
+        "aux_id": "Suzie1/ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Prompt Text"
+      },
+      "widgets_values": [
+        "lowres, error, cropped, worst quality, low quality, jpeg artifacts, out of frame, watermark, signature, deformed, ugly, mutilated, disfigured, text, extra limbs, face cut, head cut, extra fingers, extra arms, poorly drawn face, mutation, bad proportions, cropped head, malformed limbs, mutated hands, fused fingers, long neck, illustration, painting, drawing, art, sketch,bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, worst quality, cropped, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, deformed, missing limb, bad hands, extra digits, extra fingers, not enough fingers, floating head, disembodied, private area"
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 20,
+      "type": "easy showAnything",
+      "pos": [
+        1992.7027587890625,
+        -316.1781921386719
+      ],
+      "size": [
+        320,
+        830
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "type": "*",
+          "shape": 7,
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": []
+        }
+      ],
+      "title": "Styled Negative Prompt",
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.2.7",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "lowres, error, cropped, worst quality, low quality, jpeg artifacts, out of frame, watermark, signature, deformed, ugly, mutilated, disfigured, text, extra limbs, face cut, head cut, extra fingers, extra arms, poorly drawn face, mutation, bad proportions, cropped head, malformed limbs, mutated hands, fused fingers, long neck, illustration, painting, drawing, art, sketch,bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, worst quality, cropped, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, deformed, missing limb, bad hands, extra digits, extra fingers, not enough fingers, floating head, disembodied, private area, (worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3), anime, cartoon, graphic, (blur, blurry, bokeh), text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured, deformed, bad anatomy, disfigured, poorly drawn face, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, disconnected head, malformed hands, long neck, mutated hands and fingers, bad hands, missing fingers, cropped, worst quality, low quality, mutation, poorly drawn, huge calf, bad hands, fused hand, missing hand, disappearing arms, disappearing thigh, disappearing calf, disappearing legs, missing fingers, fused fingers, abnormal eye proportion, Abnormal hands, abnormal legs, abnormal feet, abnormal fingers, drawing, painting, crayon, sketch, graphite, impressionist, noisy, blurry, soft, deformed, ugly, anime, cartoon, graphic, text, painting, crayon, graphite, abstract, glitch"
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 5,
+      "type": "easy showAnything",
+      "pos": [
+        1992.7027587890625,
+        -616.1781616210938
+      ],
+      "size": [
+        320,
+        260
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "type": "*",
+          "shape": 7,
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "title": "Styled Positive Prompt",
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.2.7",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "cinematic still asian, big jugs, aesthetic, beautiful, visible teeth, action pose, barely covered, bareness, serenity, many, asian, big jugs, aesthetic, beautiful, visible teeth, action pose, barely covered, bareness, serenity, many, fancy, perfect, quiet, color, fine detail, shiny, intricate, polished, epic composition, cinematic, complex, cool, breathtaking, highly detailed, artistic, sharp, focused, extremely elegant, smart, surreal, very coherent . emotional, harmonious, vignette, 4k epic detailed, shot on kodak, 35mm photo, sharp focus, high budget, cinemascope, moody, epic, gorgeous, film grain, grainy"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 26,
+      "type": "easy showAnything",
+      "pos": [
+        4360,
+        1060
+      ],
+      "size": [
+        650,
+        450
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "type": "*",
+          "shape": 7,
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.2.7",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "{\"1\": {\"inputs\": {\"ckpt_name\": \"juggernautXL_v8Rundiffusion.safetensors\"}, \"class_type\": \"CheckpointLoaderSimple\", \"_meta\": {\"title\": \"Load Checkpoint\"}}, \"2\": {\"inputs\": {\"prompt\": \"a beautiful brazillian instagram influencer 26 years old with a full light blue double ponytail hair on the beach wearing a mayo, sexy with very big boobs, cute yeas and thick lips, curves, perfect face, full body, realistic, thick\"}, \"class_type\": \"CR Prompt Text\", \"_meta\": {\"title\": \"\\u2699\\ufe0f CR Prompt Text\"}}, \"3\": {\"inputs\": {\"prompt\": \"unrealistic, saturated, high contrast, big nose, painting, drawing, sketch, cartoon, anime, manga, render, CG, 3d, watermark, signature, label, bad hands, malformations\"}, \"class_type\": \"CR Prompt Text\", \"_meta\": {\"title\": \"\\u2699\\ufe0f CR Prompt Text\"}}, \"4\": {\"inputs\": {\"styles\": \"fooocus_styles\", \"positive\": [\"16\", 0], \"negative\": [\"3\", 0], \"select_styles\": \"Fooocus Enhance,Fooocus Sharp,Fooocus Photograph\"}, \"class_type\": \"easy stylesSelector\", \"_meta\": {\"title\": \"Styles Selector\"}}, \"5\": {\"inputs\": {\"text\": \"cinematic still a beautiful brazillian instagram influencer 26 years old with a full light blue double ponytail hair on the beach wearing a mayo, sexy with very big boobs, cute yeas and thick lips, curves, perfect face, full body, realistic, thick, a beautiful brazillian instagram influencer 26 years old with a full light blue double ponytail hair on the beach wearing a mayo, sexy with very big boobs, cute yeas and thick lips, curves, perfect face, full body, realistic, thick, intricate, elegant, highly detailed, dramatic, sharp focus, fair quality, color, illuminated, pretty . emotional, harmonious, vignette, 4k epic detailed, shot on kodak, 35mm photo, sharp focus, high budget, cinemascope, moody, epic, gorgeous, film grain, grainy, photograph , 50mm . cinematic 4k epic detailed 4k epic detailed photograph shot on kodak detailed cinematic hbo dark moody, 35mm photo, grainy, vignette, vintage, Kodachrome, Lomography, stained, highly detailed, found footage\", \"anything\": [\"4\", 0]}, \"class_type\": \"easy showAnything\", \"_meta\": {\"title\": \"Show Any\"}}, \"6\": {\"inputs\": {\"text\": \"unrealistic, saturated, high contrast, big nose, painting, drawing, sketch, cartoon, anime, manga, render, CG, 3d, watermark, signature, label, bad hands, malformations, (worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3), anime, cartoon, graphic, (blur, blurry, bokeh), text, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured, Brad Pitt, bokeh, depth of field, blurry, cropped, regular face, saturated, contrast, deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime, text, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck\", \"anything\": [\"4\", 1]}, \"class_type\": \"easy showAnything\", \"_meta\": {\"title\": \"Show Any\"}}, \"7\": {\"inputs\": {\"text\": [\"5\", 0], \"clip\": [\"14\", 1]}, \"class_type\": \"CLIPTextEncode\", \"_meta\": {\"title\": \"CLIP Text Encode (Prompt)\"}}, \"8\": {\"inputs\": {\"text\": [\"6\", 0], \"clip\": [\"14\", 1]}, \"class_type\": \"CLIPTextEncode\", \"_meta\": {\"title\": \"CLIP Text Encode (Prompt)\"}}, \"9\": {\"inputs\": {\"width\": 704, \"height\": 1408, \"batch_size\": 1}, \"class_type\": \"EmptyLatentImage\", \"_meta\": {\"title\": \"Empty Latent Image\"}}, \"10\": {\"inputs\": {\"seed\": [\"17\", 0], \"steps\": 100, \"cfg\": 4.0, \"sampler_name\": \"dpmpp_2m_sde_gpu\", \"scheduler\": \"karras\", \"denoise\": 1.0, \"model\": [\"14\", 0], \"positive\": [\"7\", 0], \"negative\": [\"8\", 0], \"latent_image\": [\"9\", 0]}, \"class_type\": \"KSampler\", \"_meta\": {\"title\": \"KSampler\"}}, \"11\": {\"inputs\": {\"samples\": [\"10\", 0], \"vae\": [\"1\", 2]}, \"class_type\": \"VAEDecode\", \"_meta\": {\"title\": \"VAE Decode\"}}, \"12\": {\"inputs\": {\"filename_prefix\": \"ComfyUI\", \"images\": [\"11\", 0]}, \"class_type\": \"SaveImage\", \"_meta\": {\"title\": \"Save Image\"}}, \"14\": {\"inputs\": {\"lora_name\": \"sd_xl_offset_example-lora_1.0.safetensors\", \"strength_model\": 0.1, \"strength_clip\": 0.1, \"model\": [\"1\", 0], \"clip\": [\"1\", 1]}, \"class_type\": \"LoraLoader\", \"_meta\": {\"title\": \"Load LoRA\"}}, \"16\": {\"inputs\": {\"text\": [\"2\", 0], \"seed\": [\"17\", 0], \"log\": \"Yes\"}, \"class_type\": \"FooocusV2Expansion\", \"_meta\": {\"title\": \"Fooocus V2 Expansion\"}}, \"17\": {\"inputs\": {\"int\": 8999062423275427000}, \"class_type\": \"Primitive integer [Crystools]\", \"_meta\": {\"title\": \"\\ud83e\\ude9b Primitive integer\"}}, \"18\": {\"inputs\": {\"text\": \"1125899906842624\", \"anything\": [\"16\", 1]}, \"class_type\": \"easy showAnything\", \"_meta\": {\"title\": \"Show Any\"}}, \"24\": {\"inputs\": {\"text\": \"1125899906842624\", \"anything\": [\"17\", 0]}, \"class_type\": \"easy showAnything\", \"_meta\": {\"title\": \"Show Any\"}}, \"26\": {\"inputs\": {\"text\": \"a beautiful brazillian instagram influencer 26 years old with a full light blue double ponytail hair on the beach wearing a mayo, sexy with very big boobs, cute yeas and thick lips, curves, perfect face, full body, realistic, thick, a beautiful brazillian instagram influencer 26 years old with a full light blue double ponytail hair on the beach wearing a mayo, sexy with very big boobs, cute yeas and thick lips, curves, perfect face, full body, realistic, thick, intricate, elegant, highly detailed, dramatic, sharp focus, fair quality, color, illuminated, pretty\", \"anything\": [\"16\", 0]}, \"class_type\": \"easy showAnything\", \"_meta\": {\"title\": \"Show Any\"}}}"
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 23,
+      "type": "Show Metadata [Crystools]",
+      "pos": [
+        4310,
+        -210
+      ],
+      "size": [
+        760,
+        420
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {}
+    },
+    {
+      "id": 25,
+      "type": "LoadImageOutput",
+      "pos": [
+        4750,
+        570
+      ],
+      "size": [
+        315,
+        338
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.16",
+        "Node name for S&R": "LoadImageOutput"
+      },
+      "widgets_values": [
+        "ComfyUI_00267_.png",
+        "refresh",
+        "image"
+      ]
+    },
+    {
+      "id": 24,
+      "type": "Load image with metadata [Crystools]",
+      "pos": [
+        4340,
+        570
+      ],
+      "size": [
+        340.20001220703125,
+        354
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "name": "prompt",
+          "type": "JSON",
+          "links": [
+            23
+          ],
+          "slot_index": 2
+        },
+        {
+          "name": "Metadata RAW",
+          "type": "METADATA_RAW",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-crystools",
+        "ver": "72e2e9af4a6b9a58ca5d753cacff37ba1ff9bfa8",
+        "Node name for S&R": "Load image with metadata [Crystools]"
+      },
+      "widgets_values": [
+        "_2025-02-10_0058.png",
+        "image"
+      ]
+    }
+  ],
+  "links": [
+    [
+      2,
+      19,
+      0,
+      2,
+      0,
+      "*"
+    ],
+    [
+      3,
+      19,
+      1,
+      3,
+      0,
+      "*"
+    ],
+    [
+      4,
+      18,
+      0,
+      5,
+      0,
+      "*"
+    ],
+    [
+      5,
+      9,
+      1,
+      7,
+      0,
+      "CLIP"
+    ],
+    [
+      6,
+      18,
+      0,
+      7,
+      1,
+      "STRING"
+    ],
+    [
+      7,
+      9,
+      1,
+      8,
+      0,
+      "CLIP"
+    ],
+    [
+      8,
+      18,
+      1,
+      8,
+      1,
+      "STRING"
+    ],
+    [
+      9,
+      10,
+      0,
+      9,
+      0,
+      "MODEL"
+    ],
+    [
+      10,
+      10,
+      1,
+      9,
+      1,
+      "CLIP"
+    ],
+    [
+      11,
+      17,
+      0,
+      12,
+      0,
+      "LATENT"
+    ],
+    [
+      12,
+      10,
+      2,
+      12,
+      1,
+      "VAE"
+    ],
+    [
+      13,
+      12,
+      0,
+      13,
+      0,
+      "IMAGE"
+    ],
+    [
+      14,
+      9,
+      0,
+      17,
+      0,
+      "MODEL"
+    ],
+    [
+      15,
+      7,
+      0,
+      17,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      16,
+      8,
+      0,
+      17,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      17,
+      11,
+      0,
+      17,
+      3,
+      "LATENT"
+    ],
+    [
+      18,
+      19,
+      1,
+      17,
+      4,
+      "INT"
+    ],
+    [
+      19,
+      19,
+      0,
+      18,
+      0,
+      "STRING"
+    ],
+    [
+      20,
+      4,
+      0,
+      18,
+      1,
+      "STRING"
+    ],
+    [
+      21,
+      21,
+      0,
+      19,
+      0,
+      "STRING"
+    ],
+    [
+      22,
+      18,
+      1,
+      20,
+      0,
+      "*"
+    ],
+    [
+      23,
+      24,
+      2,
+      26,
+      0,
+      "*"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.21762913579014875,
+      "offset": [
+        -452.49890932025505,
+        903.8757458318173
+      ]
+    }
+  },
+  "version": 0.4
+}
