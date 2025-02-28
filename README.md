@@ -23,7 +23,7 @@ This custom node brings the acclaimed Fooocus Prompt Expansion V2 directly into 
 * **Using ComfyUI Manager (Recommended):**
     * Open ComfyUI Manager.
     * Go to "Install Custom Nodes".
-    * Search for `fooocus-v2-expansion` or `ComfyUI-Fooocus-V2-Expansion` and install it.
+    * Search for `ComfyUI-Fooocus-V2-Expansion` and install it (exists a old version `fooocus-v2-expansion` that should be deleted).
     * **Restart ComfyUI after installation.**
 
 * **Install via Git URL:**
