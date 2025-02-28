@@ -1,7 +1,7 @@
 [project]
 name = "ComfyUI-Fooocus-V2-Expansion"
 description = "Adds Fooocus V2 Prompt Expansion to ComfyUI.  Expands your prompts for more detailed images using Fooocus's V2 algorithm. **Warning:** The first time you use this node, it will download the GPT-2 model (around 351MB) for prompt expansion."
-version = "1.0.0"
+version = "1.0.1"
 license = {file = "LICENSE"}
 
 [project.urls]
