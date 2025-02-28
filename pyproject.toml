@@ -1,0 +1,14 @@
+[project]
+name = "fooocus-v2-expansion"
+description = "Adds Fooocus V2 Prompt Expansion to ComfyUI.  Expands your prompts for more detailed images using Fooocus's V2 algorithm. **Warning:** The first time you use this node, it will download the GPT-2 model (around 351MB) for prompt expansion."
+version = "1.0.0"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/PanicTitan/ComfyUI-Fooocus-V2-Expansion"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = "panic-titan"
+DisplayName = "ComfyUI-Fooocus-V2-Expansion"
+Icon = "https://github.com/PanicTitan/ComfyUI-Fooocus-V2-Expansion/blob/main/logo.svg"
