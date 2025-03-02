@@ -22,8 +22,7 @@ from server import PromptServer
 # Restore the original stdout
 sys.stdout = original_stdout
 
-fooocus_expansion_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                      'fooocus_expansion'))
+fooocus_expansion_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'fooocus_expansion'))
 # fooocus_magic_split = [  # Removed magic split as it's not part of the Fooocus logic
 #     ', extremely',
 #     ', intricate,',
@@ -47,12 +46,11 @@ def remove_pattern(x, pattern):
     return x
 
 
-class FooocusExpansion:
+class FooocusExpansionEngine:
     def __init__(self):
         self.tokenizer = AutoTokenizer.from_pretrained(fooocus_expansion_path)
 
-        positive_words = open(os.path.join(fooocus_expansion_path, 'positive.txt'),
-                              encoding='utf-8').read().splitlines()
+        positive_words = open(os.path.join(fooocus_expansion_path, 'positive.txt'), encoding='utf-8').read().splitlines()
         positive_words = ['Ġ' + x.lower() for x in positive_words if x != '']
 
         self.logits_bias = torch.zeros((1, len(self.tokenizer.vocab)), dtype=torch.float32) + neg_inf
@@ -100,7 +98,7 @@ class FooocusExpansion:
 
     @torch.no_grad()
     @torch.inference_mode()
-    def __call__(self, prompt, seed):
+    def expand_prompt(self, prompt, seed): # Renamed __call__ to expand_prompt for clarity
         if prompt == '':
             return ''
 
@@ -121,11 +119,7 @@ class FooocusExpansion:
 
         # https://huggingface.co/blog/introducing-csearch
         # https://huggingface.co/docs/transformers/generation_strategies
-        features = self.model.generate(**tokenized_kwargs,
-                                       top_k=100,
-                                       max_new_tokens=max_new_tokens,
-                                       do_sample=True,
-                                       logits_processor=LogitsProcessorList([self.logits_processor]))
+        features = self.model.generate(**tokenized_kwargs, top_k=100, max_new_tokens=max_new_tokens, do_sample=True, logits_processor=LogitsProcessorList([self.logits_processor]))
 
         response = self.tokenizer.batch_decode(features, skip_special_tokens=True)
         result = safe_str(response[0])
@@ -144,6 +138,7 @@ class FooocusV2Expansion:
             },
             "optional": {
                 "seed_behavior": (["Random", "Fixed", "Forward Prompt Seed", "Random Forward Prompt Seed"], {"default": "Random"}),
+                "expand": ("BOOLEAN", {"default": True}), # New "expand" boolean input
                 "log": ("BOOLEAN", {"default": True}),
             },
             "hidden": {
@@ -153,68 +148,72 @@ class FooocusV2Expansion:
         }
 
     RETURN_TYPES = ("STRING", "INT",)
-    RETURN_NAMES = ("final_prompt", "seed",)
-    FUNCTION = "expand_prompt"  # Function name
+    RETURN_NAMES = ("expanded_prompt", "seed",) # Renamed final_prompt to expanded_prompt
+    FUNCTION = "expand_prompt"  # More descriptive function name
 
     CATEGORY = "Fooocus V2 Expansion"  # Category for organization
 
     @staticmethod
     @torch.no_grad()
-    def expand_prompt(positive_prompt, prompt_seed, seed_behavior="Random", log = True, persisted_seed=-1, last_prompt="", last_prompt_seed=-1, unique_id=None):
-        expansion = FooocusExpansion()
+    def expand_prompt(positive_prompt, prompt_seed, seed_behavior="Random", expand=True, log=True, persisted_seed=-1, last_prompt="", last_prompt_seed=-1, unique_id=None): # Added "expand" parameter
+        expansion_engine = FooocusExpansionEngine() # Instantiate the engine once here
+        log_messages = [] # Initialize log messages list
 
         last_prompt = positive_prompt
         last_prompt_seed = prompt_seed
 
         prompt = remove_empty_str([safe_str(positive_prompt)], default='')[0]
 
-        if log == True:
-            print(f"[Fooocus V2 Expansion] Original Prompt: {prompt}")
-
-        if log == True:
-          print(f"[Fooocus V2 Expansion] Original Seed: {prompt_seed}")
+        log_messages.append(f"Original Prompt: {prompt}")
+        log_messages.append(f"Original Seed: {prompt_seed}")
 
         if seed_behavior != "Fixed" or persisted_seed == -1:
           persisted_seed = prompt_seed
-        
+
         if seed_behavior == "Fixed":
           prompt_seed = persisted_seed
 
         if prompt_seed == -1 or seed_behavior == "Random" or seed_behavior == "Random Forward Prompt Seed":
           prompt_seed = random.randint(1, 0xffffffffffffffff)
           PromptServer.instance.send_sync("Fooocus.V2.Expansion.updateSeed", { "prompt_seed": prompt_seed, "id": unique_id })
-          if log == True:
-            print(f"[Fooocus V2 Expansion] Seed == -1 or seed_behavior == 'Random' -> New Seed: {prompt_seed}")
+          if prompt_seed == -1:
+            log_messages.append(f"Seed == -1 -> New Seed: {prompt_seed}")
+          else:
+            log_messages.append(f"seed_behavior == \"{seed_behavior}\" -> New Seed: {prompt_seed}")
 
         if prompt_seed < 0:
           prompt_seed =- prompt_seed
-          if log == True:
-            print(f"[Fooocus V2 Expansion] Seed < 0 -> New Seed: {prompt_seed}")
-        
-        positive_prompt_expansion = expansion(prompt, prompt_seed)
-        final_prompt = join_prompts(prompt, positive_prompt_expansion)
+          log_messages.append(f"Seed < 0 -> New Seed: {prompt_seed}")
+
+        if expand: # Conditionally expand the prompt based on the "expand" input
+            positive_prompt_expansion = expansion_engine.expand_prompt(prompt, prompt_seed)
+            final_prompt = join_prompts(prompt, positive_prompt_expansion)
+        else:
+            final_prompt = prompt
+            positive_prompt_expansion = "" # Empty expansion when not expanding
 
         if prompt_seed > 0xffffffffffffffff:
           prompt_seed = int(prompt_seed) % SEED_LIMIT_NUMPY
-          if log == True:
-            print(f"[Fooocus V2 Expansion] Seed > 0xffffffffffffffff -> New Seed: {prompt_seed}")
+          log_messages.append(f"Seed > 0xffffffffffffffff -> New Seed: {prompt_seed}")
 
         truncated_seed = int(prompt_seed) % SEED_LIMIT_NUMPY
 
         if seed_behavior == "Forward Prompt Seed" or seed_behavior == "Random Forward Prompt Seed":
           prompt_seed = truncated_seed
 
-        if log == True:
-            print(f"[Fooocus V2 Expansion] Final Seed: {prompt_seed}")
-            print(f"[Fooocus V2 Expansion] Prompt Seed: {truncated_seed}")
-            print(f"[Fooocus V2 Expansion] New Suffix: {positive_prompt_expansion}")
-            print(f"[Fooocus V2 Expansion] Final Prompt: {final_prompt}")
+        log_messages.append(f"Final Seed: {prompt_seed}")
+        log_messages.append(f"Prompt Seed: {truncated_seed}")
+        log_messages.append(f"New Suffix: {positive_prompt_expansion}")
+        log_messages.append(f"Final Prompt: {final_prompt}")
+
+        if log: # Print all logs at once if log is True
+            for message in log_messages:
+                print(f"Fooocus V2 Expansion: {message}")
 
         return final_prompt, prompt_seed
 
     @classmethod
-    def IS_CHANGED(cls, positive_prompt, prompt_seed, seed_behavior="Random", log = True, persisted_seed=-1, unique_id=None):
-      # return FooocusV2Expansion.expand_prompt(positive_prompt, prompt_seed, seed_behavior, log, persisted_seed, unique_id)
+    def IS_CHANGED(cls, positive_prompt, prompt_seed, seed_behavior="Random", expand=True, log=True, persisted_seed=-1, unique_id=None): # Added "expand" parameter
       return float("NaN")
 
 # Define a mapping of node class names to their respective classes
