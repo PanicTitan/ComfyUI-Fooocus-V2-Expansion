@@ -28,6 +28,7 @@ app.registerExtension({
           if (widget.name == "seed_behavior") setProperty(widget, "tooltip", "Behavior for handling the seed. \r\nRandom: always new seed (between 1 and 0xffffffffffffffff), \r\nFixed: uses the input seed, \r\nForward Prompt Seed: forwards the seed used for the prompt expansion, \r\nRandom Forward Prompt Seed: always new seed (between 1 and 0xffffffffffffffff) as base then forwards the seed used for the prompt expansion.");
           if (widget.name == "expand") setProperty(widget, "tooltip", "Enable or disable prompt expansion. If disabled, the original prompt will be returned.");
           if (widget.name == "log") setProperty(widget, "tooltip", "Enable or disable logging of expansion process in the console.");
+          if (widget.name == "double_prompt") setProperty(widget, "tooltip", "Enable or disable the duplication of the original prompt for greater fidelity.");
         }
       }
     }
