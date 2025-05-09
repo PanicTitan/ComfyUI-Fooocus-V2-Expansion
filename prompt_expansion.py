@@ -140,6 +140,7 @@ class FooocusV2Expansion:
                 "seed_behavior": (["Random", "Fixed", "Forward Prompt Seed", "Random Forward Prompt Seed"], {"default": "Random"}),
                 "expand": ("BOOLEAN", {"default": True}), # New "expand" boolean input
                 "log": ("BOOLEAN", {"default": True}),
+                "double_prompt": ("BOOLEAN", {"default": False}),
             },
             "hidden": {
                 "persisted_seed": ("INT", {"default": -1, "min": -0xffffffffffffffff, "max": 0xffffffffffffffff}),
@@ -155,7 +156,7 @@ class FooocusV2Expansion:
 
     @staticmethod
     @torch.no_grad()
-    def expand_prompt(positive_prompt, prompt_seed, seed_behavior="Random", expand=True, log=True, persisted_seed=-1, last_prompt="", last_prompt_seed=-1, unique_id=None): # Added "expand" parameter
+    def expand_prompt(positive_prompt, prompt_seed, seed_behavior="Random", expand=True, log=True, double_prompt=False, persisted_seed=-1, last_prompt="", last_prompt_seed=-1, unique_id=None): # Added "expand" parameter
         expansion_engine = FooocusExpansionEngine() # Instantiate the engine once here
         log_messages = [] # Initialize log messages list
 
@@ -187,7 +188,10 @@ class FooocusV2Expansion:
 
         if expand: # Conditionally expand the prompt based on the "expand" input
             positive_prompt_expansion = expansion_engine.expand_prompt(prompt, prompt_seed)
-            final_prompt = join_prompts(prompt, positive_prompt_expansion)
+            if double_prompt:
+                final_prompt = join_prompts(prompt, positive_prompt_expansion)
+            else:
+                final_prompt = positive_prompt_expansion
         else:
             final_prompt = prompt
             positive_prompt_expansion = "" # Empty expansion when not expanding
@@ -213,7 +217,7 @@ class FooocusV2Expansion:
         return final_prompt, prompt_seed
 
     @classmethod
-    def IS_CHANGED(cls, positive_prompt, prompt_seed, seed_behavior="Random", expand=True, log=True, persisted_seed=-1, unique_id=None): # Added "expand" parameter
+    def IS_CHANGED(cls, positive_prompt, prompt_seed, seed_behavior="Random", expand=True, log=True, double_prompt=False, persisted_seed=-1, unique_id=None): # Added "expand" parameter
       return float("NaN")
 
 # Define a mapping of node class names to their respective classes
